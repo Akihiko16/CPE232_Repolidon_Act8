@@ -1,0 +1,53 @@
+
+  -  name: Nagios Libraries and Dependencies (Ubuntu)
+     tags: ubuntu, libraries, dependencies
+     apt:
+       name:
+        -  autoconf
+        -  libc6
+        -  gcc
+        -  make
+        -  wget
+        -  unzip
+        -  apache2
+        -  php
+        -  libapache2-mod-php
+        -  libssl-dev
+        -  openssl
+        -  libgd-dev
+        -  bc
+        -  gawk
+        -  dc
+        -  build-essential
+        -  snmp
+        -  libnet-snmp-perl
+        -  gettext
+        -  python3
+        -  python3-pip
+       state: latest
+
+  -  name: Install Nagios4
+     become: true
+     apt:
+       name:
+         -  nagios4
+         -  nagios-plugins
+       state: latest
+
+  -  name: configure apache web server
+     become: true
+     shell:
+        sudo a2enmod rewrite cgi
+
+  -  name: Restart apache server
+     service:
+       name: apache2
+       state: restarted
+       enabled: true
+
+  -  name: Turn on Nagios
+     service:
+       name: nagios4
+       state: restarted
+       enabled: true
+
